@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% block title %}Admin Panel{% endblock %}
+{% block content %}
+<h2>🔐 Admin Panel: Reported Problems</h2>
+
+<!-- Login Form -->
+{% if not session.admin_logged %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <h4>Admin Login Required</h4>
+                <form method="POST" action="{{ url_for('admin_login') }}">
+                    <div class="mb-3">
+                        <label class="form-label">Password</label>
+                        <input type="password" name="password" class="form-control" required placeholder="admin123">
+                    </div>
+                    <button type="submit" class="btn btn-warning w-100">Login to Admin</button>
+                </form>
+                <p class="mt-3 text-muted text-center">Default password: <code>admin123</code> (change in app.py!)</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% else %}
+<!-- Admin Content -->
+<div class="alert alert-success">✅ Logged in as Admin</div>
+<a href="{{ url_for('admin_login') }}" class="btn btn-outline-danger mb-3">Logout</a>
+
+{% if problems %}
+    {% for problem in problems %}
+    <div class="card mb-3">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <strong>{{ problem.title }}</strong>
+            <span class="badge bg-{{ 'warning' if problem.status == 'pending' else 'success' }}">{{ problem.status|upper }}</span>
+        </div>
+        <div class="card-body">
+            <p>{{ problem.content }}</p>
+            <small class="text-muted">Reported: {{ problem.timestamp.strftime('%Y-%m-%d %H:%M') }}</small>
+            {% if problem.image_file %}
+            <div class="mt-2">
+                <img src="{{ url_for('static', filename='uploads/' + problem.image_file) }}" class="img-thumbnail" style="max-width: 200px;">
+            </div>
+            {% endif %}
+        </div>
+        <div class="card-footer">
+            <form method="POST" action="{{ url_for('update_post', post_id=problem.id) }}" class="d-inline">
+                <select name="status" class="form-select d-inline w-auto">
+                    <option value="pending" {{ 'selected' if problem.status == 'pending' }}>Pending</option>
+                    <option value="in_progress" {{ 'selected' if problem.status == 'in_progress' }}>In Progress</option>
+                    <option value="resolved" {{ 'selected' if problem.status == 'resolved' }}>Resolved</option>
+                    <option value="closed" {{ 'selected' if problem.status == 'closed' }}>Closed</option>
+                </select>
+                <button type="submit" class="btn btn-sm btn-primary ms-2">Update Status</button>
+            </form>
+        </div>
+    </div>
+    {% endfor %}
+{% else %}
+<div class="alert alert-info text-center">
+    <h4>No reports yet</h4>
+    <p>Waiting for anonymous submissions...</p>
+</div>
+{% endif %}
+{% endif %}
+
+<a href="{{ url_for('index') }}" class="btn btn-secondary mt-3">← Back to Home</a>
+{% endblock %}

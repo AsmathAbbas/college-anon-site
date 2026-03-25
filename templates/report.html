@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}Anonymous Report{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <h2>🚨 Anonymous Problem Report</h2>
+        <p class="text-muted">Your report goes directly to higher authorities. Fully anonymous—no login/IP tracking.</p>
+        <form method="POST">
+            {{ form.hidden_tag() }}
+            <div class="mb-3">
+                <label class="form-label">{{ form.title.label.text }}</label>
+                {{ form.title(class="form-control", placeholder="e.g., Classroom Issue") }}
+            </div>
+            <div class="mb-3">
+                <label class="form-label">{{ form.content.label.text }}</label>
+                {{ form.content(class="form-control", rows="6", placeholder="Describe the problem in detail...") }}
+            </div>
+            <button type="submit" class="btn btn-danger btn-lg w-100">Submit Report Anonymously</button>
+        </form>
+        <div class="mt-4 text-center">
+            <a href="{{ url_for('index') }}" class="btn btn-secondary">← Back Home</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

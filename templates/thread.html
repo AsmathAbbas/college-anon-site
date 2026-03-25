@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Thread: {{ op_post.title }}</h2>
+{% if op_post.image_file %}
+<img src="{{ url_for('static', filename='uploads/' + op_post.image_file) }}" class="img-fluid mb-3" style="max-width:400px;">
+{% endif %}
+<p class="lead">{{ op_post.content }}</p>
+<small class="text-muted">Posted: {{ op_post.timestamp.strftime('%Y-%m-%d %H:%M') }}</small>
+
+<h4>Replies ({{ posts|length }}):</h4>
+{% for post in posts %}
+<div class="border-bottom py-3">
+  <strong>{{ post.timestamp.strftime('%H:%M') }}:</strong> {{ post.content }}
+  {% if post.image_file %}
+  <br><img src="{{ url_for('static', filename='uploads/' + post.image_file) }}" class="img-thumbnail mt-2" style="max-width:200px;">
+  {% endif %}
+</div>
+{% else %}
+<p>No replies yet. Be the first!</p>
+{% endfor %}
+
+<h5>Add Reply:</h5>
+<form method="POST" action="{{ url_for('post') }}" enctype="multipart/form-data" class="mb-5">
+  <input type="hidden" name="thread_id" value="{{ op_post.id }}">
+  <input type="hidden" name="category" value="social">
+  <div class="mb-3">
+    <label class="form-label">Title (optional)</label>
+    <input type="text" name="title" class="form-control" maxlength="100">
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Your Reply</label>
+    <textarea name="content" class="form-control" rows="4" required></textarea>
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Image (optional)</label>
+    <input type="file" name="image" class="form-control" accept="image/*">
+  </div>
+  <button type="submit" class="btn btn-primary">Post Reply</button>
+</form>
+<a href="{{ url_for('social') }}" class="btn btn-secondary">Back to Social</a>
+{% endblock %}

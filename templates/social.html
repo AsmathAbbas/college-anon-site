@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Social Threads</h2>
+{% for thread in threads %}
+<div class="card mb-2">
+<div class="card-body">
+<h5>{{ thread.title }}</h5>
+<p>{{ thread.content[:100] }}...</p>
+{% if thread.image_file %}<img src="/static/uploads/{{ thread.image_file }}" width=100>{% endif %}
+<a href="{{ url_for('thread', id=thread.id) }}" class="btn btn-sm btn-primary">View</a>
+</div></div>
+{% endfor %}
+<a href="{{ url_for('post') }}" class="btn btn-success">New Thread</a>
+{% endblock %}

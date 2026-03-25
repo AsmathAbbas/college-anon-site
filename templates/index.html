@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="jumbotron text-center bg-light p-5 rounded">
+    <h1 class="display-4">Welcome to Anonymous Platform</h1>
+    <p class="lead">Report problems to authorities, post socially, or chat anonymously like 4chan.</p>
+    <hr class="my-4">
+    <div class="row">
+        <div class="col-md-4">
+            <h3>🚨 Report Problems</h3>
+            <a class="btn btn-danger btn-lg w-100 mb-2" href="{{ url_for('report') }}">Submit Report</a>
+            <p>Anonymous complaints for teachers/students → authorities action.</p>
+        </div>
+        <div class="col-md-4">
+            <h3>💬 Social Feed</h3>
+            <a class="btn btn-success btn-lg w-100 mb-2" href="{{ url_for('social') }}">View Posts</a>
+            <p>Threads, images, discussions - fully anonymous.</p>
+        </div>
+        <div class="col-md-4">
+            <h3>🗣️ Live Chat</h3>
+            <a class="btn btn-info btn-lg w-100 mb-2" href="{{ url_for('chat') }}">Join Chat</a>
+            <p>Username rooms - no identity revealed.</p>
+        </div>
+    </div>
+</div>
+{% endblock %}
